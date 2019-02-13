@@ -88,6 +88,9 @@ public class DotDotTest {
         IntConverter converter = new IntConverter();
         assertEquals("Mostafa", getString("1", map, converter));
         assertEquals(new Integer(22), getInt("2.22.31", map, converter));
+
+        Map<Integer, Object> value = getMap("2.22", map, converter);
+        assertEquals(mapLevel3, value);
     }
 
 }

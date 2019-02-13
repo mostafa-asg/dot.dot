@@ -110,6 +110,13 @@ public class DotDot {
         return (Boolean) get(path, map, converter);
     }
 
+    public static <V> Map<String,V> getMap(String path, Map<String,V> map) {
+        return (Map<String, V>) get(path, map, new StringConverter());
+    }
+    public static <K,V> Map<K,V> getMap(String path, Map<K,V> map, Converter<K> converter) {
+        return (Map<K, V>) get(path, map, converter);
+    }
+
     public static <V> V get(String path, Map<String,V> map) {
         return get(path, map, new StringConverter());
     }
