@@ -93,4 +93,26 @@ public class DotDotTest {
         assertEquals(mapLevel3, value);
     }
 
+    @Test()
+    public void ensureTest() {
+        Map<String, Object> mapLevel3 = new HashMap<String, Object>();
+        mapLevel3.put("age", 22);
+        mapLevel3.put("three",3);
+
+        Map<String, Object> mapLevel2 = new HashMap<String, Object>();
+        mapLevel2.put("lastname", "Asgari");
+        mapLevel2.put("two",mapLevel3);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("firstname", "Mostafa");
+        map.put("one", mapLevel2);
+
+        assertTrue( ensure("one", map) );
+        assertTrue( ensure("one.two", map) );
+        assertTrue( ensure("one.two.three", map) );
+        assertFalse( ensure("unknown_key", map) );
+        assertFalse( ensure("one.two.unknown_key", map) );
+    }
+
+
 }

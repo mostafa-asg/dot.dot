@@ -14,7 +14,7 @@ public class DotDot {
      * Otherwise return null.
      * @param path nested keys that separated by dot(.)
      * @param map your key/value map
-     * @param converter converter for converting string representation to a your key type
+     * @param converter converter for converting string representation of the path to your key type
      * @param <K> the key type
      * @param <V> the value type
      * @throws IllegalStateException if your path is nested but your map value is not a Map
@@ -49,6 +49,28 @@ public class DotDot {
         }
 
         return null;
+    }
+
+    /**
+     * Ensures that the given path has some value
+     * @param path nested keys that separated by dot(.)
+     * @param map your key/value map
+     * @param converter converter for converting string representation of the path to your key type
+     * @param <K> the key type
+     * @param <V> the value type
+     * @throws IllegalStateException if your path is nested but your map value is not a Map
+     */
+    public static <K,V> boolean ensure(String path, Map<K,V> map, Converter<K> converter) {
+        V value = get(path, map, converter);
+        if (value == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static <V> boolean ensure(String path, Map<String,V> map) {
+        return ensure(path, map, new StringConverter());
     }
 
     public static <V> String getString(String path, Map<String,V> map) {
