@@ -20,6 +20,10 @@ public class DotDot {
      * @throws IllegalStateException if your path is nested but your map value is not a Map
      */
     public static <K,V> V get(String path, Map<K,V> map, Converter<K> converter) {
+        if (map == null) {
+            return null;
+        }
+
         String[] keys = path.split("\\.");
         Map<K,V> subMap = map;
 
