@@ -3,6 +3,7 @@ package com.github.dotdot;
 import com.github.dotdot.converters.Converter;
 import com.github.dotdot.converters.StringConverter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class DotDot {
@@ -67,6 +68,52 @@ public class DotDot {
         } else {
             return true;
         }
+    }
+
+    public static <K> void put(String path, Object value, Map<K,Object> map, Converter<K> converter) {
+        String[] keys = path.split("\\.");
+
+        if (keys.length == 1) {
+            map.put(converter.convert(keys[0]), value);
+            return;
+        }
+
+        Map<K, Object>[] maps = new Map[keys.length];
+        int size = maps.length;
+        String prevKey = "";
+
+        for (int i = 0; i < size; i++) {
+
+            if (i == 0) {
+                maps[i] = map;
+                continue;
+            }
+
+            if (prevKey.equals(""))
+                prevKey += keys[i-1];
+            else
+                prevKey += "." + keys[i-1];
+
+            Object mapValue = get(prevKey, map, converter);
+            K key = converter.convert(keys[i - 1]);
+            if (mapValue == null) {
+                try {
+                    maps[i] = map.getClass().newInstance();
+                } catch (Exception e) {
+                    maps[i] = new HashMap<K, Object>();
+                }
+
+                maps[i - 1].put(key, maps[i]);
+            } else {
+                maps[i] = (Map)mapValue;
+            }
+        }
+
+        maps[size-1].put(converter.convert(keys[size-1]), value);
+    }
+
+    public static void put(String path, Object value, Map<String,Object> map) {
+        put(path, value, map, new StringConverter());
     }
 
     public static <V> boolean ensure(String path, Map<String,V> map) {

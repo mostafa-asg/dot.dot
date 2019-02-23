@@ -13,7 +13,7 @@ public class DotDotTest {
     @Test
     public void simple() {
         Map<String, Integer> map = new HashMap<String, Integer>();
-        map.put("one",1);
+        map.put("one", 1);
 
         Integer value = get("one", map);
         assertEquals(new Integer(1), value);
@@ -22,9 +22,9 @@ public class DotDotTest {
     @Test()
     public void nestedKeysButValueIsNotMap() {
         Map<String, Integer> map = new HashMap<String, Integer>();
-        map.put("one",1);
-        map.put("two",2);
-        map.put("three",3);
+        map.put("one", 1);
+        map.put("two", 2);
+        map.put("three", 3);
 
         try {
             get("one.two.three", map);
@@ -39,11 +39,11 @@ public class DotDotTest {
     public void nestedKeys() {
         Map<String, Object> mapLevel3 = new HashMap<String, Object>();
         mapLevel3.put("age", 22);
-        mapLevel3.put("three",3);
+        mapLevel3.put("three", 3);
 
         Map<String, Object> mapLevel2 = new HashMap<String, Object>();
         mapLevel2.put("lastname", "Asgari");
-        mapLevel2.put("two",mapLevel3);
+        mapLevel2.put("two", mapLevel3);
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("firstname", "Mostafa");
@@ -70,16 +70,16 @@ public class DotDotTest {
         value = getInt("INVALID.two.three", map);
         assertNull(value);
     }
-    
+
     @Test
     public void intKeysTest() {
         Map<Integer, Object> mapLevel3 = new HashMap<Integer, Object>();
         mapLevel3.put(31, 22);
-        mapLevel3.put(32,3);
+        mapLevel3.put(32, 3);
 
         Map<Integer, Object> mapLevel2 = new HashMap<Integer, Object>();
         mapLevel2.put(21, "Asgari");
-        mapLevel2.put(22,mapLevel3);
+        mapLevel2.put(22, mapLevel3);
 
         Map<Integer, Object> map = new HashMap<Integer, Object>();
         map.put(1, "Mostafa");
@@ -97,22 +97,43 @@ public class DotDotTest {
     public void ensureTest() {
         Map<String, Object> mapLevel3 = new HashMap<String, Object>();
         mapLevel3.put("age", 22);
-        mapLevel3.put("three",3);
+        mapLevel3.put("three", 3);
 
         Map<String, Object> mapLevel2 = new HashMap<String, Object>();
         mapLevel2.put("lastname", "Asgari");
-        mapLevel2.put("two",mapLevel3);
+        mapLevel2.put("two", mapLevel3);
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("firstname", "Mostafa");
         map.put("one", mapLevel2);
 
-        assertTrue( ensure("one", map) );
-        assertTrue( ensure("one.two", map) );
-        assertTrue( ensure("one.two.three", map) );
-        assertFalse( ensure("unknown_key", map) );
-        assertFalse( ensure("one.two.unknown_key", map) );
+        assertTrue(ensure("one", map));
+        assertTrue(ensure("one.two", map));
+        assertTrue(ensure("one.two.three", map));
+        assertFalse(ensure("unknown_key", map));
+        assertFalse(ensure("one.two.unknown_key", map));
     }
 
+    @Test()
+    public void putTest() {
+        Map<String, Object> map = new HashMap<String, Object>();
 
+        put("a.b.c.d1", 12, map);
+        put("a.b.c.d2", "Hello", map);
+        put("a.b2", 3.141592, map);
+        put("a.b.c.d3.A", "Mostafa", map);
+        put("b", 100, map);
+
+        assertTrue(ensure("a.b.c.d1", map));
+        assertTrue(ensure("a.b.c.d2", map));
+        assertTrue(ensure("a.b2", map));
+        assertTrue(ensure("a.b.c.d3.A", map));
+        assertTrue(ensure("b", map));
+
+        assertEquals(12, get("a.b.c.d1", map));
+        assertEquals("Hello", get("a.b.c.d2", map));
+        assertEquals(3.141592, get("a.b2", map));
+        assertEquals("Mostafa", get("a.b.c.d3.A", map));
+        assertEquals(100, get("b", map));
+    }
 }
