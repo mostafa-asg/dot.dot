@@ -38,7 +38,7 @@ if (a != null) {
     }
 }
 ```
-But with DotDot it is easy as:
+But with DotDot it is as easy as:
 ```
 import static com.github.DotDot.*
 
@@ -54,7 +54,7 @@ Map<String, Object> response = new Gson().fromJson(jsonStr, Map.class);
 int c = getInt("a.b.c", response)
 ```
 
-### Ensure that some field provided
+### Ensure that some fields are provided
 Sometimes you only need to ensure that some fields are provided. In this case you can use **ensure** method. It returns true or false:
 ```Java
 boolean ok = ensure("a.b.c", response)
