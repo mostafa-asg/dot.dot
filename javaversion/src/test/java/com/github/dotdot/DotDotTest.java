@@ -63,12 +63,15 @@ public class DotDotTest {
 
         value = getInt("one.two.INVALID", map);
         assertNull(value);
+        assertEquals(new Integer(0), getInt("one.two.INVALID", map, 0));
 
         value = getInt("one.INVALID.three", map);
         assertNull(value);
+        assertEquals(new Integer(1), getInt("one.INVALID.three", map, 1));
 
         value = getInt("INVALID.two.three", map);
         assertNull(value);
+        assertEquals(new Integer(2), getInt("INVALID.two.three", map, 2));
     }
 
     @Test
