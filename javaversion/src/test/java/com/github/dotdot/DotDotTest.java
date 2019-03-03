@@ -3,6 +3,7 @@ package com.github.dotdot;
 import com.github.dotdot.converters.IntConverter;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import static org.junit.Assert.*;
@@ -138,5 +139,21 @@ public class DotDotTest {
         assertEquals(3.141592, get("a.b2", map));
         assertEquals("Mostafa", get("a.b.c.d3.A", map));
         assertEquals(100, get("b", map));
+    }
+
+    @Test
+    public void copyIncludeTest() {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        put("a.b.c.d1", 12, map);
+        put("a.b.c.d2", "Hello", map);
+        put("a.b2", 3.141592, map);
+        put("a.b.c.d3.A", "Mostafa", map);
+        put("b", 100, map);
+
+        Map<String, Object> copiedMap = copyInclude(map, Arrays.asList("b", "a.b.c.d3.A"));
+        assertEquals(2, copiedMap.size());
+        assertEquals("Mostafa", get("a.b.c.d3.A", copiedMap));
+        assertEquals(100, get("b", copiedMap));
     }
 }

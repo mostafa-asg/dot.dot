@@ -4,6 +4,7 @@ import com.github.dotdot.converters.Converter;
 import com.github.dotdot.converters.StringConverter;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DotDot {
@@ -68,6 +69,33 @@ public class DotDot {
         } else {
             return true;
         }
+    }
+
+    /**
+     * Create a new Map that only contains keys inside `includes` list
+     */
+    public static <K> Map<K, Object> copyInclude(Map<K, Object> map,
+                                                 List<String> includes,
+                                                 Converter<K> converter) {
+        if (map == null)
+            return null;
+
+        Map<K, Object> result = null;
+        try {
+            result = map.getClass().newInstance();
+        } catch (Exception e) {
+            result = new HashMap<K, Object>(includes.size());
+        }
+
+        for(String path: includes) {
+            put(path, get(path, map, converter), result, converter);
+        }
+
+        return result;
+    }
+
+    public static Map<String, Object> copyInclude(Map<String, Object> map, List<String> includes) {
+        return copyInclude(map, includes, new StringConverter());
     }
 
     public static <K> void put(String path, Object value, Map<K,Object> map, Converter<K> converter) {
