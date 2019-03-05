@@ -227,6 +227,13 @@ public class DotDotTest {
         } catch (NotEqualException exc) {
 
         }
+
+        try {
+            mustEqual("a.b.c.B", 85, map);
+            fail("must throw exception");
+        } catch (NotEqualException exc) {
+
+        }
     }
 
 }

@@ -108,6 +108,10 @@ public class DotDot {
             return;
         }
 
+        if (value == null) {
+            throw new NotEqualException("null is not equal to " + expected);
+        }
+
         if (!value.equals(expected)) {
             throw new NotEqualException(value.toString() + " is not equal to " + expected);
         }
