@@ -90,6 +90,30 @@ public class DotDot {
     }
 
     /**
+     * Check the given path has exact value
+     * @param path nested keys that separated by dot(.)
+     * @param expected the value that must be provided
+     * @param map your key/value map
+     * @param converter converter for converting string representation of the path to your key type
+     * @param <K> the key type
+     * @param <V> the value type
+     * @throws IllegalStateException if your path is nested but your map's value is not a Map
+     * @throws NotEqualException If the values mismatch
+     */
+    public static <K,V> void mustEqual(String path, V expected, Map<K,V> map, Converter<K> converter) throws NotEqualException {
+        V value = get(path, map, converter);
+
+        if (value == null && expected == null) {
+            // match
+            return;
+        }
+
+        if (!value.equals(expected)) {
+            throw new NotEqualException(value.toString() + " is not equal to " + expected);
+        }
+    }
+
+    /**
      * Create a new Map that only contains keys inside `includes` list
      */
     public static <K> Map<K, Object> copyInclude(Map<K, Object> map,
@@ -168,6 +192,10 @@ public class DotDot {
 
     public static <V> void must(String path, Map<String,V> map) throws NoValueException {
         must(path, map, new StringConverter());
+    }
+
+    public static <V> void mustEqual(String path, V expected, Map<String,V> map) throws NotEqualException {
+        mustEqual(path, expected, map, new StringConverter());
     }
 
     public static <V> String getString(String path, Map<String,V> map) {

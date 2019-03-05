@@ -204,4 +204,29 @@ public class DotDotTest {
         }
     }
 
+    @Test
+    public void mustEqualTest() throws NotEqualException {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        put("a.b.c.d1", 12, map);
+        put("a.b.c.d2", "Hello", map);
+        put("a.b2", 3.141592, map);
+        put("a.b.c.d3.A", "Mostafa", map);
+        put("b", 100, map);
+
+        mustEqual("a.b.c.d1", 12, map);
+        mustEqual("a.b.c.d2", "Hello", map);
+        mustEqual("a.b2", 3.141592, map);
+        mustEqual("a.b.c.d3.A", "Mostafa", map);
+
+        mustEqual("a.b.c.d3.B", null, map);
+
+        try {
+            mustEqual("a.b.c.d1", 85, map);
+            fail("must throw exception");
+        } catch (NotEqualException exc) {
+
+        }
+    }
+
 }
