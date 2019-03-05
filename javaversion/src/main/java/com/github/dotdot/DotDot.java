@@ -60,7 +60,7 @@ public class DotDot {
      * @param converter converter for converting string representation of the path to your key type
      * @param <K> the key type
      * @param <V> the value type
-     * @throws IllegalStateException if your path is nested but your map value is not a Map
+     * @throws IllegalStateException if your path is nested but your map's value is not a Map
      */
     public static <K,V> boolean ensure(String path, Map<K,V> map, Converter<K> converter) {
         V value = get(path, map, converter);
@@ -68,6 +68,24 @@ public class DotDot {
             return false;
         } else {
             return true;
+        }
+    }
+
+    /**
+     * Must is like `Ensure` method but it will throw exception if
+     * the given path has not value
+     * @param path nested keys that separated by dot(.)
+     * @param map your key/value map
+     * @param converter converter for converting string representation of the path to your key type
+     * @param <K> the key type
+     * @param <V> the value type
+     * @throws IllegalStateException if your path is nested but your map's value is not a Map
+     * @throws NoValueException If the given path has not value
+     */
+    public static <K,V> void must(String path, Map<K,V> map, Converter<K> converter) throws NoValueException {
+        V value = get(path, map, converter);
+        if (value == null) {
+            throw new NoValueException(path + " value is missing");
         }
     }
 
@@ -146,6 +164,10 @@ public class DotDot {
 
     public static <V> boolean ensure(String path, Map<String,V> map) {
         return ensure(path, map, new StringConverter());
+    }
+
+    public static <V> void must(String path, Map<String,V> map) throws NoValueException {
+        must(path, map, new StringConverter());
     }
 
     public static <V> String getString(String path, Map<String,V> map) {

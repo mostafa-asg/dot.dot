@@ -156,4 +156,52 @@ public class DotDotTest {
         assertEquals("Mostafa", get("a.b.c.d3.A", copiedMap));
         assertEquals(100, get("b", copiedMap));
     }
+
+    @Test
+    public void mustNotThrowExceptionTest() throws NoValueException {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        put("a.b.c.d1", 12, map);
+        put("a.b.c.d2", "Hello", map);
+        put("a.b2", 3.141592, map);
+        put("a.b.c.d3.A", "Mostafa", map);
+        put("b", 100, map);
+
+        must("a.b.c.d1", map);
+        must("a.b.c.d2", map);
+        must("a.b2", map);
+        must("a.b.c.d3.A", map);
+        must("b", map);
+    }
+
+    @Test
+    public void mustThrowExceptionTest() {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        put("a.b.c.d1", 12, map);
+        put("a.b.c.d2", "Hello", map);
+        put("a.b2", 3.141592, map);
+        put("a.b.c.d3.A", "Mostafa", map);
+        put("b", 100, map);
+
+        try {
+            must("a.b.c.d4", map);
+            fail("a.b.c.d4 has not provided");
+        } catch (NoValueException e) {
+
+        }
+
+        try {
+            must("a.b", map);
+        } catch (NoValueException e) {
+            fail("a.b provided");
+        }
+
+        try {
+            must("c", map);
+            fail("there is no c");
+        } catch (NoValueException e) {
+        }
+    }
+
 }
