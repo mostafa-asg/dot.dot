@@ -6,6 +6,7 @@ import com.github.dotdot.converters.StringConverter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class DotDot {
 
@@ -69,6 +70,25 @@ public class DotDot {
         } else {
             return true;
         }
+    }
+
+    /**
+     * Ensures that all the given path has some value
+     * @param paths a set of path
+     * @param map your key/value map
+     * @param converter converter for converting string representation of the path to your key type
+     * @param <K> the key type
+     * @param <V> the value type
+     * @throws IllegalStateException if your path is nested but your map's value is not a Map
+     */
+    public static <K,V> boolean ensure(Set<String> paths, Map<K,V> map, Converter<K> converter) {
+        for(String path: paths) {
+            if (!ensure(path, map, converter)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
