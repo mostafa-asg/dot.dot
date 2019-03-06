@@ -109,11 +109,11 @@ public class DotDot {
         }
 
         if (value == null) {
-            throw new NotEqualException("null is not equal to " + expected);
+            throw new NotEqualException(String.format("Value of '%s' is missing", path));
         }
 
         if (!value.equals(expected)) {
-            throw new NotEqualException(value.toString() + " is not equal to " + expected);
+            throw new NotEqualException(String.format("Provided value is %s=%s but expected %s=%s", path, value, path, expected));
         }
     }
 
