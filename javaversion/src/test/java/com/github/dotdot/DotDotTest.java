@@ -236,4 +236,24 @@ public class DotDotTest {
         }
     }
 
+    @Test
+    public void putAsArrayOfKeyValueTest() throws NotEqualException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        put("a", 12, map);
+
+        Map<String, Object> subMap = new HashMap<String, Object>();
+        subMap.put("name", "Mostafa");
+        subMap.put("age", 20);
+
+        putAsArrayOfKeyValue("info", subMap, map);
+
+        Map<String, Object>[] arr = (Map[])get("info", map);
+        assertEquals(2, arr.length);
+
+        assertEquals("name", arr[0].get("key"));
+        assertEquals("Mostafa", arr[0].get("value"));
+
+        assertEquals("age", arr[1].get("key"));
+        assertEquals(20, arr[1].get("value"));
+    }
 }

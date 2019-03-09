@@ -206,6 +206,21 @@ public class DotDot {
         maps[size-1].put(converter.convert(keys[size-1]), value);
     }
 
+    public static <K> void putAsArrayOfKeyValue(String path, Map<String, Object> value, Map<K,Object> map, Converter<K> converter) {
+        Map<String, Object>[] arrValue = new Map[value.size()];
+
+        int counter = 0;
+        for (Map.Entry<String, Object> entry : value.entrySet()) {
+            arrValue[counter] = new HashMap<String, Object>();
+            arrValue[counter].put("key", entry.getKey());
+            arrValue[counter].put("value", entry.getValue());
+            ++counter;
+        }
+
+        put(path, arrValue, map, converter);
+    }
+
+
     public static void put(String path, Object value, Map<String,Object> map) {
         put(path, value, map, new StringConverter());
     }
@@ -214,7 +229,9 @@ public class DotDot {
             put(path, value, map);
         }
     }
-
+    public static void putAsArrayOfKeyValue(String path, Map<String, Object> value, Map<String, Object> map) {
+        putAsArrayOfKeyValue(path, value, map, new StringConverter());
+    }
 
     public static <V> boolean ensure(String path, Map<String,V> map) {
         return ensure(path, map, new StringConverter());
