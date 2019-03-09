@@ -209,6 +209,12 @@ public class DotDot {
     public static void put(String path, Object value, Map<String,Object> map) {
         put(path, value, map, new StringConverter());
     }
+    public static void putIfNotNull(String path, Object value, Map<String,Object> map) {
+        if (value != null) {
+            put(path, value, map);
+        }
+    }
+
 
     public static <V> boolean ensure(String path, Map<String,V> map) {
         return ensure(path, map, new StringConverter());
