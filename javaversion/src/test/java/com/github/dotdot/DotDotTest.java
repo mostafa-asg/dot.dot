@@ -256,4 +256,14 @@ public class DotDotTest {
         assertEquals("age", arr[1].get("key"));
         assertEquals(20, arr[1].get("value"));
     }
+
+    @Test
+    public void putAsArrayOfKeyValueNullTest() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        put("a", 12, map);
+
+        putAsArrayOfKeyValue("info", null, map);
+        assertEquals(2, map.size());
+        assertEquals(null, map.get("info"));
+    }
 }

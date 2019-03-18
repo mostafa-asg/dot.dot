@@ -207,6 +207,11 @@ public class DotDot {
     }
 
     public static <K> void putAsArrayOfKeyValue(String path, Map<String, Object> value, Map<K,Object> map, Converter<K> converter) {
+        if (value == null) {
+            put(path, null, map, converter);
+            return;
+        }
+
         Map<String, Object>[] arrValue = new Map[value.size()];
 
         int counter = 0;
