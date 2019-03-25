@@ -63,7 +63,7 @@ public class DotDot {
      * @param <V> the value type
      * @throws IllegalStateException if your path is nested but your map's value is not a Map
      */
-    public static <K,V> boolean ensure(String path, Map<K,V> map, Converter<K> converter) {
+    public static <K,V> boolean ensureHaveValue(String path, Map<K,V> map, Converter<K> converter) {
         V value = get(path, map, converter);
         if (value == null) {
             return false;
@@ -81,9 +81,9 @@ public class DotDot {
      * @param <V> the value type
      * @throws IllegalStateException if your path is nested but your map's value is not a Map
      */
-    public static <K,V> boolean ensure(Set<String> paths, Map<K,V> map, Converter<K> converter) {
+    public static <K,V> boolean ensureHaveValue(Set<String> paths, Map<K,V> map, Converter<K> converter) {
         for(String path: paths) {
-            if (!ensure(path, map, converter)) {
+            if (!ensureHaveValue(path, map, converter)) {
                 return false;
             }
         }
@@ -92,7 +92,7 @@ public class DotDot {
     }
 
     /**
-     * Must is like `Ensure` method but it will throw exception if
+     * mustHaveValue is like `ensureHaveValue` method but it will throw exception if
      * the given path has not value
      * @param path nested keys that separated by dot(.)
      * @param map your key/value map
@@ -102,7 +102,7 @@ public class DotDot {
      * @throws IllegalStateException if your path is nested but your map's value is not a Map
      * @throws NoValueException If the given path has not value
      */
-    public static <K,V> void must(String path, Map<K,V> map, Converter<K> converter) throws NoValueException {
+    public static <K,V> void mustHaveValue(String path, Map<K,V> map, Converter<K> converter) throws NoValueException {
         V value = get(path, map, converter);
         if (value == null) {
             throw new NoValueException(path + " value is missing");
@@ -238,12 +238,12 @@ public class DotDot {
         putAsArrayOfKeyValue(path, value, map, new StringConverter());
     }
 
-    public static <V> boolean ensure(String path, Map<String,V> map) {
-        return ensure(path, map, new StringConverter());
+    public static <V> boolean ensureHaveValue(String path, Map<String,V> map) {
+        return ensureHaveValue(path, map, new StringConverter());
     }
 
-    public static <V> void must(String path, Map<String,V> map) throws NoValueException {
-        must(path, map, new StringConverter());
+    public static <V> void mustHaveValue(String path, Map<String,V> map) throws NoValueException {
+        mustHaveValue(path, map, new StringConverter());
     }
 
     public static <V> void mustEqual(String path, V expected, Map<String,V> map) throws NotEqualException {

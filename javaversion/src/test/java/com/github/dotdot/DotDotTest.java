@@ -111,11 +111,11 @@ public class DotDotTest {
         map.put("firstname", "Mostafa");
         map.put("one", mapLevel2);
 
-        assertTrue(ensure("one", map));
-        assertTrue(ensure("one.two", map));
-        assertTrue(ensure("one.two.three", map));
-        assertFalse(ensure("unknown_key", map));
-        assertFalse(ensure("one.two.unknown_key", map));
+        assertTrue(ensureHaveValue("one", map));
+        assertTrue(ensureHaveValue("one.two", map));
+        assertTrue(ensureHaveValue("one.two.three", map));
+        assertFalse(ensureHaveValue("unknown_key", map));
+        assertFalse(ensureHaveValue("one.two.unknown_key", map));
     }
 
     @Test()
@@ -128,11 +128,11 @@ public class DotDotTest {
         put("a.b.c.d3.A", "Mostafa", map);
         put("b", 100, map);
 
-        assertTrue(ensure("a.b.c.d1", map));
-        assertTrue(ensure("a.b.c.d2", map));
-        assertTrue(ensure("a.b2", map));
-        assertTrue(ensure("a.b.c.d3.A", map));
-        assertTrue(ensure("b", map));
+        assertTrue(ensureHaveValue("a.b.c.d1", map));
+        assertTrue(ensureHaveValue("a.b.c.d2", map));
+        assertTrue(ensureHaveValue("a.b2", map));
+        assertTrue(ensureHaveValue("a.b.c.d3.A", map));
+        assertTrue(ensureHaveValue("b", map));
 
         assertEquals(12, get("a.b.c.d1", map));
         assertEquals("Hello", get("a.b.c.d2", map));
@@ -167,11 +167,11 @@ public class DotDotTest {
         put("a.b.c.d3.A", "Mostafa", map);
         put("b", 100, map);
 
-        must("a.b.c.d1", map);
-        must("a.b.c.d2", map);
-        must("a.b2", map);
-        must("a.b.c.d3.A", map);
-        must("b", map);
+        mustHaveValue("a.b.c.d1", map);
+        mustHaveValue("a.b.c.d2", map);
+        mustHaveValue("a.b2", map);
+        mustHaveValue("a.b.c.d3.A", map);
+        mustHaveValue("b", map);
     }
 
     @Test
@@ -185,20 +185,20 @@ public class DotDotTest {
         put("b", 100, map);
 
         try {
-            must("a.b.c.d4", map);
+            mustHaveValue("a.b.c.d4", map);
             fail("a.b.c.d4 has not provided");
         } catch (NoValueException e) {
 
         }
 
         try {
-            must("a.b", map);
+            mustHaveValue("a.b", map);
         } catch (NoValueException e) {
             fail("a.b provided");
         }
 
         try {
-            must("c", map);
+            mustHaveValue("c", map);
             fail("there is no c");
         } catch (NoValueException e) {
         }
