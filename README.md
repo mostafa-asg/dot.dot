@@ -55,10 +55,11 @@ int c = getInt("a.b.c", response)
 ```
 
 ### Ensure that some fields are provided
-Sometimes you only need to ensure that some fields are provided. In this case you can use **ensure** method. It returns true or false:
+Sometimes you only need to ensure that some fields are provided. In this case you can use **ensureHaveValue** method. It returns true or false:
 ```Java
-boolean ok = ensure("a.b.c", response)
+boolean ok = ensureHaveValue("a.b.c", response)
 ```
+If you want to check that some field has some value you can use **mustEqual**.
 
 ### Create Nested Map
 Instead of writng this code:
