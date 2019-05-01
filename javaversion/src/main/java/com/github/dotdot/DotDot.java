@@ -3,10 +3,7 @@ package com.github.dotdot;
 import com.github.dotdot.converters.Converter;
 import com.github.dotdot.converters.StringConverter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class DotDot {
 
@@ -225,7 +222,6 @@ public class DotDot {
         put(path, arrValue, map, converter);
     }
 
-
     public static void put(String path, Object value, Map<String,Object> map) {
         put(path, value, map, new StringConverter());
     }
@@ -358,6 +354,40 @@ public class DotDot {
 
     public static <V> V get(String path, Map<String,V> map) {
         return get(path, map, new StringConverter());
+    }
+
+    private static Set<String> getDotKey(Map<String, Object> map, String parent) {
+        Set<String> result = new HashSet<String>();
+        Set<Map.Entry<String, Object>> entries = map.entrySet();
+
+        for (Map.Entry<String, Object> entry: entries) {
+            if (entry.getValue() instanceof Map) {
+                result.addAll(getDotKey((Map)entry.getValue(), parent + "." + entry.getKey()));
+            } else {
+                result.add(parent + "." + entry.getKey());
+            }
+        }
+
+        return result;
+    }
+
+    public static Set<String> getKeysInDotFormat(Map<String, Object> map) {
+        Set<String> result = new HashSet<String>();
+        if (map == null || map.size() == 0) {
+            return result;
+        }
+
+        Set<Map.Entry<String, Object>> entries = map.entrySet();
+
+        for (Map.Entry<String, Object> entry: entries) {
+            if (entry.getValue() instanceof Map) {
+                result.addAll(getDotKey((Map)entry.getValue(), entry.getKey()));
+            } else {
+                result.add(entry.getKey());
+            }
+        }
+
+        return result;
     }
 
     /**

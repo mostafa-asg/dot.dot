@@ -3,9 +3,8 @@ package com.github.dotdot;
 import com.github.dotdot.converters.IntConverter;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 import static org.junit.Assert.*;
 import static com.github.dotdot.DotDot.*;
 
@@ -266,4 +265,22 @@ public class DotDotTest {
         assertEquals(2, map.size());
         assertEquals(null, map.get("info"));
     }
+
+    @Test
+    public void keysInDotFormatTest() {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        put("a.b.c.d1", 12, map);
+        put("a.b.c.d2", "Hello", map);
+        put("a.b2", 3.141592, map);
+        put("a.b.c.d3.A", "Mostafa", map);
+        put("b", 100, map);
+
+        Set<String> keys = getKeysInDotFormat(map);
+
+        assertTrue(keys.containsAll(
+                Arrays.asList("b", "a.b2", "a.b.c.d1", "a.b.c.d2", "a.b.c.d3.A")
+        ));
+    }
+
 }
