@@ -283,4 +283,59 @@ public class DotDotTest {
         ));
     }
 
+    @Test
+    public void typeExtend_byte_Test() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        byte b = 10;
+        put("byte", b , map);
+        assertEquals(new Byte(b), getByte("byte", map));
+        assertEquals(new Short(b), getShort("byte", map));
+        assertEquals(new Integer(b), getInt("byte", map));
+        assertEquals(new Long(b), getLong("byte", map));
+        assertEquals(new Float(b), getFloat("byte", map));
+        assertEquals(new Double(b), getDouble("byte", map));
+    }
+
+    @Test
+    public void typeExtend_short_Test() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        short sh = 10;
+        put("short", sh , map);
+        assertEquals(new Short(sh), getShort("short", map));
+        assertEquals(new Integer(sh), getInt("short", map));
+        assertEquals(new Long(sh), getLong("short", map));
+        assertEquals(new Float(sh), getFloat("short", map));
+        assertEquals(new Double(sh), getDouble("short", map));
+    }
+
+    @Test
+    public void typeExtend_int_Test() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        int i = 10;
+        put("int", i , map);
+        assertEquals(new Integer(i), getInt("int", map));
+        assertEquals(new Long(i), getLong("int", map));
+        assertEquals(new Float(i), getFloat("int", map));
+        assertEquals(new Double(i), getDouble("int", map));
+    }
+
+    @Test
+    public void typeExtend_long_Test() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        long l = 10;
+        put("long", l , map);
+        assertEquals(new Long(l), getLong("long", map));
+        assertEquals(new Float(l), getFloat("long", map));
+        assertEquals(new Double(l), getDouble("long", map));
+    }
+
+    @Test
+    public void typeExtend_float_Test() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        float f = 10;
+        put("float", f , map);
+        assertEquals(new Float(f), getFloat("float", map));
+        assertEquals(new Double(f), getDouble("float", map));
+    }
+
 }

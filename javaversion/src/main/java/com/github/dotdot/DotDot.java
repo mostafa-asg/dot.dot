@@ -269,69 +269,75 @@ public class DotDot {
     }
 
     public static <V> Byte getByte(String path, Map<String,V> map) {
-        return (Byte) get(path, map, new StringConverter());
+        return getByte(path, map, new StringConverter());
     }
     public static <V> Byte getByte(String path, Map<String,V> map, Byte defaultValue) {
-        Byte original = (Byte) get(path, map, new StringConverter());
-        return original != null ? original : defaultValue;
+        Number original = (Number) get(path, map, new StringConverter());
+        return original != null ? original.byteValue() : defaultValue;
     }
     public static <K,V> Byte getByte(String path, Map<K,V> map, Converter<K> converter) {
-        return (Byte) get(path, map, converter);
+        Number number = (Byte) get(path, map, converter);
+        return number != null ? number.byteValue() : null;
     }
 
     public static <V> Short getShort(String path, Map<String,V> map) {
-        return (Short) get(path, map, new StringConverter());
+        return getShort(path, map, new StringConverter());
     }
     public static <V> Short getShort(String path, Map<String,V> map, Short defaultValue) {
-        Short original = (Short) get(path, map, new StringConverter());
-        return original != null ? original : defaultValue;
+        Number original = (Number) get(path, map, new StringConverter());
+        return original != null ? original.shortValue() : defaultValue;
     }
     public static <K,V> Short getShort(String path, Map<K,V> map, Converter<K> converter) {
-        return (Short) get(path, map, converter);
+        Number number = (Number) get(path, map, converter);
+        return number != null ? number.shortValue() : null;
     }
 
     public static <V> Integer getInt(String path, Map<String,V> map) {
-        return (Integer) get(path, map, new StringConverter());
+        return getInt(path, map, new StringConverter());
     }
     public static <V> Integer getInt(String path, Map<String,V> map, Integer defaultValue) {
-        Integer original = (Integer) get(path, map, new StringConverter());
-        return original != null ? original : defaultValue;
+        Number original = (Number) get(path, map, new StringConverter());
+        return original != null ? original.intValue() : defaultValue;
     }
     public static <K,V> Integer getInt(String path, Map<K,V> map, Converter<K> converter) {
-        return (Integer) get(path, map, converter);
+        Number number = (Number) get(path, map, converter);
+        return number != null ? number.intValue() : null;
     }
 
     public static <V> Long getLong(String path, Map<String,V> map) {
-        return (Long) get(path, map, new StringConverter());
+        return getLong(path, map, new StringConverter());
     }
     public static <V> Long getLong(String path, Map<String,V> map, Long defaultValue) {
-        Long original = (Long) get(path, map, new StringConverter());
-        return original != null ? original : defaultValue;
+        Number original = (Number) get(path, map, new StringConverter());
+        return original != null ? original.longValue() : defaultValue;
     }
     public static <K,V> Long getLong(String path, Map<K,V> map, Converter<K> converter) {
-        return (Long) get(path, map, converter);
+        Number number = (Number) get(path, map, converter);
+        return number != null ? number.longValue() : null;
     }
 
     public static <V> Float getFloat(String path, Map<String,V> map) {
-        return (Float) get(path, map, new StringConverter());
+        return getFloat(path, map, new StringConverter());
     }
     public static <V> Float getFloat(String path, Map<String,V> map, Float defaultValue) {
-        Float original = (Float) get(path, map, new StringConverter());
-        return original != null ? original : defaultValue;
+        Number original = (Number) get(path, map, new StringConverter());
+        return original != null ? original.floatValue() : defaultValue;
     }
     public static <K,V> Float getFloat(String path, Map<K,V> map, Converter<K> converter) {
-        return (Float) get(path, map, converter);
+        Number number = (Number) get(path, map, converter);
+        return number != null ? number.floatValue() : null;
     }
 
     public static <V> Double getDouble(String path, Map<String,V> map) {
-        return (Double) get(path, map, new StringConverter());
+        return getDouble(path, map, new StringConverter());
     }
     public static <V> Double getDouble(String path, Map<String,V> map, Double defaultValue) {
-        Double original = (Double) get(path, map, new StringConverter());
-        return original != null ? original : defaultValue;
+        Number original = (Number) get(path, map, new StringConverter());
+        return original != null ? original.doubleValue() : defaultValue;
     }
     public static <K,V> Double getDouble(String path, Map<K,V> map, Converter<K> converter) {
-        return (Double) get(path, map, converter);
+        Number number = (Number) get(path, map, converter);
+        return number != null ? number.doubleValue() : null;
     }
 
     public static <V> Boolean getBoolean(String path, Map<String,V> map) {
@@ -388,6 +394,35 @@ public class DotDot {
         }
 
         return result;
+    }
+
+    public static Map<String, Object> mergeNestedMaps(Map<String, Object> map1, Map<String, Object> map2) {
+        if (map1 == null) {
+            return map2;
+        }
+
+        if (map2 == null) {
+            return map1;
+        }
+
+        Map<String, Object> newMap = null;
+        try {
+            newMap = map1.getClass().newInstance();
+        } catch (Exception e) {
+            newMap = new HashMap<String, Object>();
+        }
+
+        Set<String> keys1 = getKeysInDotFormat(map1);
+        for(String key: keys1) {
+            put(key, get(key, map1), newMap);
+        }
+
+        Set<String> keys2 = getKeysInDotFormat(map2);
+        for(String key: keys2) {
+            put(key, get(key, map2), newMap);
+        }
+
+        return newMap;
     }
 
     /**
